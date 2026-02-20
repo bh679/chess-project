@@ -168,35 +168,31 @@ git branch -d dev/<feature-slug>
 
 ## Local Dev Environment
 
-Each session runs its own dev servers on unique ports to avoid conflicts between concurrent sessions.
+Each session runs a single dev server on a unique port. chess-api serves both the API and the client static files — one port handles everything.
 
-### Server (chess-api)
-
-```
-PORT=<port> node ./worktrees/<feature-slug>/chess-api/index.js &
-```
-
-Test API endpoints: `curl http://localhost:<port>/api/<endpoint>`
-
-### Client (chess-client)
+### Starting the Dev Server
 
 ```
-npx serve ./worktrees/<feature-slug>/chess-client -p <port> &
+CLIENT_DIR=./worktrees/<feature-slug>/chess-client PORT=<port> node ./worktrees/<feature-slug>/chess-api/index.js &
 ```
+
+- `http://localhost:<port>/` — serves the chess-client UI
+- `http://localhost:<port>/api/*` — serves the API endpoints
+- If the feature only changes chess-api (no client), omit `CLIENT_DIR`
 
 ### Port Management
 
 Ports are tracked in `./ports/` at the chess-project root (shared across all sessions — not inside any worktree).
 
-**Claiming ports (at dev server start):**
+**Claiming a port (at dev server start):**
 1. `mkdir -p ./ports`
 2. Check existing port files: `ls ./ports/`
-3. Check what's actually in use: `lsof -i :3001-3099 -i :8001-8099`
-4. Pick the lowest available ports (API: 3001+, Client: 8001+)
-5. Write your claim: `echo '{"api": <port>, "client": <port>}' > ./ports/<session-id>.json`
+3. Check what's actually in use: `lsof -i :3001-3099`
+4. Pick the lowest available port (3001+)
+5. Write your claim: `echo '{"port": <port>}' > ./ports/<session-id>.json`
 
-**Releasing ports (at session end / cleanup):**
-1. Stop dev servers: `kill %1 %2` (or by PID)
+**Releasing a port (at session end / cleanup):**
+1. Stop dev server (by PID)
 2. Remove port file: `rm ./ports/<session-id>.json`
 
 ## Testing
@@ -207,8 +203,8 @@ Test your own work before presenting to the user. Use both API tests and Playwri
 
 Test endpoints directly:
 ```
-curl -X GET http://localhost:<api-port>/api/<endpoint>
-curl -X POST http://localhost:<api-port>/api/<endpoint> -H "Content-Type: application/json" -d '{"key": "value"}'
+curl -X GET http://localhost:<port>/api/<endpoint>
+curl -X POST http://localhost:<port>/api/<endpoint> -H "Content-Type: application/json" -d '{"key": "value"}'
 ```
 
 ### Playwright Browser Testing
@@ -220,7 +216,7 @@ const { chromium } = require('playwright');
 
 const browser = await chromium.launch();
 const page = await browser.newPage();
-await page.goto('http://localhost:<client-port>');
+await page.goto('http://localhost:<port>');
 
 // Interact with the UI
 await page.click('#some-element');
@@ -318,8 +314,8 @@ git push origin master
 
 ### Implementation Start
 - [ ] Worktree created for each repo being changed
-- [ ] Ports claimed in `./ports/<session-id>.json` (only for repos that need a dev server)
-- [ ] Dev servers running on claimed ports (client server for UI testing, API server only if feature uses the API)
+- [ ] Port claimed in `./ports/<session-id>.json`
+- [ ] Dev server running (chess-api serves both API and client static files on one port)
 - [ ] Repo CLAUDE.md read for coding standards
 
 ### Testing Complete
@@ -335,7 +331,7 @@ git push origin master
 - [ ] Feature documented in appropriate wiki(s)
 - [ ] Wiki changes committed and pushed
 - [ ] Worktree removed, branch deleted
-- [ ] Ports released (`./ports/<session-id>.json` removed)
-- [ ] Dev servers stopped
+- [ ] Port released (`./ports/<session-id>.json` removed)
+- [ ] Dev server stopped
 - [ ] Project board Status → Done
 - [ ] Trigger score recalculation
