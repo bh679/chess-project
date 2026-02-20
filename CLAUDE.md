@@ -132,3 +132,69 @@ For each feature, set:
 - **Dependencies** — which other features must be done first
 
 Query valid options from the project board. Update estimates as plans become more detailed. Always trigger score recalculation after changes.
+
+## Git Worktrees
+
+Use git worktrees for isolated concurrent development. Each session creates worktrees in the sub-repos (chess-client, chess-api) — not in chess-project itself.
+
+### Creating Worktrees (before making code changes)
+
+Before implementing changes in a repo, create a worktree for it:
+
+```
+cd ./chess-client
+git branch dev/<feature-slug>
+git worktree add ../worktrees/<feature-slug>/chess-client dev/<feature-slug>
+```
+
+For cross-repo features, repeat for `./chess-api`:
+
+```
+cd ./chess-api
+git branch dev/<feature-slug>
+git worktree add ../worktrees/<feature-slug>/chess-api dev/<feature-slug>
+```
+
+Only create worktrees for repos you're actively changing.
+
+### Cleanup
+
+After the PR is merged:
+```
+cd ./chess-client
+git worktree remove ../worktrees/<feature-slug>/chess-client
+git branch -d dev/<feature-slug>
+```
+
+## Local Dev Environment
+
+Each session runs its own dev servers on unique ports to avoid conflicts between concurrent sessions.
+
+### Server (chess-api)
+
+```
+PORT=<port> node ./worktrees/<feature-slug>/chess-api/index.js &
+```
+
+Test API endpoints: `curl http://localhost:<port>/api/<endpoint>`
+
+### Client (chess-client)
+
+```
+npx serve ./worktrees/<feature-slug>/chess-client -p <port> &
+```
+
+### Port Management
+
+Ports are tracked in `./ports/` at the chess-project root (shared across all sessions — not inside any worktree).
+
+**Claiming ports (at dev server start):**
+1. `mkdir -p ./ports`
+2. Check existing port files: `ls ./ports/`
+3. Check what's actually in use: `lsof -i :3001-3099 -i :8001-8099`
+4. Pick the lowest available ports (API: 3001+, Client: 8001+)
+5. Write your claim: `echo '{"api": <port>, "client": <port>}' > ./ports/<session-id>.json`
+
+**Releasing ports (at session end / cleanup):**
+1. Stop dev servers: `kill %1 %2` (or by PID)
+2. Remove port file: `rm ./ports/<session-id>.json`
