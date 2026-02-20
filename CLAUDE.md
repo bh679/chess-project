@@ -239,3 +239,51 @@ After taking screenshots, analyse them with your vision capabilities:
 ### Test Results
 
 Post all test output and screenshots in the session chat. Update the project board item with a summary and screenshots.
+
+## PR & Merge
+
+When testing is complete and the user is satisfied:
+
+1. Create a PR from the feature branch to main:
+   ```
+   gh pr create --repo bh679/chess-client --title "<Feature Name>" --body "<summary of changes>"
+   ```
+2. Post the PR link in the session chat
+3. Wait for user to confirm merge approval
+4. Merge the PR:
+   ```
+   gh pr merge <PR-NUMBER> --repo bh679/chess-client --squash
+   ```
+5. For cross-repo features, repeat for chess-api
+
+Never merge without explicit user confirmation in the session.
+
+## Feature Documentation
+
+After a feature is merged, document it in the appropriate wiki. Follow the templates and conventions in each wiki's CLAUDE.md.
+
+### Client Features → Chess Wiki (`./Wiki/`)
+
+1. Read `./Wiki/CLAUDE.md` for templates and formatting conventions
+2. Add entry to `Features.md` index
+3. Create `Feature: <Name>.md` page using the feature documentation template
+
+### Server Features → chess-api Wiki (`./chess-api-wiki/`)
+
+1. Read `./chess-api-wiki/CLAUDE.md` for templates and formatting conventions
+2. Add entry to `Features.md` index
+3. Create `Feature: <Name>.md` page
+
+### Cross-Repo Features
+
+Create pages in both wikis.
+
+### Committing Wiki Changes
+
+```
+cd ./Wiki
+git pull origin master
+git add -A
+git commit -m "Wiki: Document <Feature Name>"
+git push origin master
+```
