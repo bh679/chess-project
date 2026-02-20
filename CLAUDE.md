@@ -58,3 +58,77 @@ Resume: claude --resume <session-id>
 ```
 
 The user can search by name in the Desktop sidebar or paste the resume command in terminal.
+
+## Data Sources
+
+### Repositories
+- **chess-project** — `./` (this repo, `bh679/chess-project`). Project config, CLAUDE.md, permissions.
+- **chess-client** — `./chess-client/` (client repo, `bh679/chess-client`)
+- **chess-api** — `./chess-api/` (server repo, `bh679/chess-api`)
+
+### Wikis
+- **chess-project Wiki** — `./chess-project-wiki/` (from `bh679/chess-project.wiki.git`). Product Engineer docs, workflow design, project-level architecture.
+- **Chess Wiki** — `./Wiki/` (from `bh679/chess-client.wiki.git`). Project-wide concerns, client features, roadmap.
+- **chess-api Wiki** — `./chess-api-wiki/` (from `bh679/chess-api.wiki.git`). Server features, API design, database schema.
+
+### Project Board
+- **GitHub Project:** `bh679` org project (Project V2), project number `1`
+- **Project ID:** `PVT_kwHOACbL3s4BPaw5`
+- Use `gh` CLI for all project board operations (see Project Board Management below)
+
+### Coding Standards
+Each repo has its own CLAUDE.md with coding standards, architecture docs, and conventions. Always read the repo's CLAUDE.md before implementing changes in that repo.
+
+## Project Board Management
+
+Full automation — the agent creates items, updates statuses, sets all fields, and triggers score recalculation. The user never needs to touch the project board.
+
+### Field Reference
+
+Query current fields and options: `gh project field-list 1 --owner bh679 --format json`
+
+Key fields: Status, Priority, Approved, Categories, Time Estimate, Complexity, Dependencies, Score.
+
+### Status Lifecycle
+
+Idea → Planned → In Development → Ready for Testing → Testing → Done
+
+| Status | Meaning | Who acts |
+|--------|---------|----------|
+| **Idea** | Feature captured, no plan yet | Agent explores |
+| **Planned** | Plan written, awaiting user approval | User reviews in session |
+| **In Development** | User approved, agent building | Agent implements |
+| **Ready for Testing** | Agent tested, user can test | User tests |
+| **Testing** | User actively testing | User |
+| **Done** | PR merged, feature documented | Agent cleanup |
+
+### Updating Items
+
+To update a field:
+```
+gh project item-edit --project-id "PVT_kwHOACbL3s4BPaw5" --id "<ITEM_ID>" --field-id "<FIELD_ID>" --single-select-option-id "<OPTION_ID>"
+```
+
+### Score
+
+Score is auto-calculated — **never set manually**. Trigger recalculation after changing any item's fields:
+```
+gh workflow run update-scores.yml --repo bh679/chess-client
+```
+
+### Intake (new feature)
+
+1. Check existing project board items — avoid creating duplicates
+2. Create a project board item: `gh project item-create 1 --owner bh679 --title "<Feature Name>" --body "<description>\nSession: Feature: <name>\nResume: claude --resume <session-id>"`
+3. Set Status to Idea, Priority, and Categories
+4. Perform initial estimation (Time Estimate, Complexity, Dependencies)
+5. Trigger score recalculation
+
+### Estimation
+
+For each feature, set:
+- **Time Estimate** — how long to implement
+- **Complexity** — technical difficulty, components affected, risk
+- **Dependencies** — which other features must be done first
+
+Query valid options from the project board. Update estimates as plans become more detailed. Always trigger score recalculation after changes.
