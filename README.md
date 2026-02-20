@@ -15,6 +15,7 @@ git clone git@github.com:bh679/chess-client.git chess-client
 git clone git@github.com:bh679/chess-api.git chess-api
 git clone git@github.com:bh679/chess-client.wiki.git Wiki
 git clone git@github.com:bh679/chess-api.wiki.git chess-api-wiki
+git clone git@github.com:bh679/chess-project.wiki.git chess-project-wiki
 
 # Install Playwright (for agent testing)
 npm install
@@ -32,6 +33,7 @@ chess-project/              ← this repo (project config)
 ├── chess-api/              ← server repo (bh679/chess-api)
 ├── Wiki/                   ← Chess wiki (bh679/chess-client.wiki)
 ├── chess-api-wiki/         ← chess-api wiki (bh679/chess-api.wiki)
+├── chess-project-wiki/     ← chess-project wiki (bh679/chess-project.wiki)
 └── worktrees/              ← created by agent sessions (gitignored)
 ```
 

@@ -3,6 +3,7 @@ chess-client/
 chess-api/
 Wiki/
 chess-api-wiki/
+chess-project-wiki/
 
 # Git worktrees created by Product Engineer sessions
 worktrees/
