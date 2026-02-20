@@ -8,6 +8,9 @@ chess-project-wiki/
 # Git worktrees created by Product Engineer sessions
 worktrees/
 
+# Port claims for concurrent dev sessions
+ports/
+
 # macOS
 .DS_Store
 
