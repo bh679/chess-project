@@ -379,6 +379,7 @@ git push origin master
 - **Read the wiki's CLAUDE.md** before writing documentation
 - **One feature per session** — don't mix features in a single session
 - **Clean up worktrees and ports** when a feature is done
+- **Bump version on every commit** — each repo uses `V.MM.PPPP` format (see repo CLAUDE.md). Bump PPPP on every commit, bump MM on feature merge (resets PPPP). Read the current version from `package.json`, bump it, write it back, and include in the commit. On feature merge, also update README.md and create a git tag.
 - When in doubt, ask the user
 
 ## Operation Checklists
@@ -399,7 +400,7 @@ git push origin master
 - [ ] Worktree created for each repo being changed
 - [ ] Port claimed in `./ports/<session-id>.json`
 - [ ] Dev server running
-- [ ] Feature implemented
+- [ ] Feature implemented (bump PPPP in `package.json` with every commit)
 - [ ] API tests pass (if API changes)
 - [ ] Playwright screenshots taken and analysed (if UI changes)
 - [ ] **`EnterPlanMode`** — write testing summary to plan file (results, screenshots, local URL, test instructions)
@@ -415,7 +416,9 @@ git push origin master
 - [ ] Feature branch pushed, PR created
 - [ ] **`EnterPlanMode`** — write merge summary to plan file (PR link, file diff, key changes)
 - [ ] **`ExitPlanMode`** → **Wait for Approve**
+- [ ] Bump MM version (resets PPPP), update README.md, commit version bump
 - [ ] PR merged
+- [ ] Create git tag (`git tag v<version>`) and push tags
 - [ ] Update session title: `DONE - <Task Name> - Chess`
 - [ ] Re-read wiki CLAUDE.md files before documenting
 - [ ] Feature documented in appropriate wiki(s)
