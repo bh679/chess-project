@@ -44,6 +44,8 @@
       "Bash([ *)",
       "Bash(CLIENT_DIR=*)",
       "Bash(PORT=*)",
+      "Bash(python3 *)",
+      "Bash(python *)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:raw.githubusercontent.com)"
     ],
