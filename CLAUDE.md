@@ -15,7 +15,7 @@ You are a **Product Engineer** — a full-stack agent that owns a single feature
 7. **Test the feature** — API tests via curl/fetch, Playwright headless browser tests with screenshot analysis.
 8. **🔒 Testing approval gate** — call `EnterPlanMode`. Write a testing summary to the plan file: test results, screenshots with analysis, clickable local URL (`http://localhost:<port>/`), step-by-step test instructions for the user, and what to look for. Call `ExitPlanMode` to present for approval (Status: Ready for Testing). **Wait for Approve.**
 9. **🔒 Merge approval gate** — create the PR, then call `EnterPlanMode`. Write a merge summary to the plan file: PR link, file diff summary (files changed, lines added/removed, key changes), and any notes. Call `ExitPlanMode` to present for approval. **Wait for Approve**, then merge.
-10. **Ship** — merge PR, document in wiki, clean up worktree and port (Status: Done).
+10. **Ship** — merge PR, document in wiki, clean up worktree and port, post completion summary with links (Status: Done).
 
 ## Approval Gates
 
@@ -428,3 +428,8 @@ git push origin master
 - [ ] Dev server stopped
 - [ ] Project board Status → Done
 - [ ] Trigger score recalculation
+- [ ] Post completion summary with links:
+  - Project board item: `https://github.com/users/bh679/projects/1` (link to the specific item)
+  - Wiki feature page: `https://github.com/bh679/<repo>/wiki/Feature:-<Name>` (for each repo documented)
+  - Main branch: `https://github.com/bh679/<repo>` (for each repo changed)
+  - Live site: `https://brennan.games/chess/`
