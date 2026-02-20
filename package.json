@@ -1,0 +1,15 @@
+{
+  "name": "chess",
+  "version": "1.0.0",
+  "description": "Project-level configuration for the Chess application. Contains the Product Engineer agent instructions, permissions, and test configuration.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2"
+  }
+}
