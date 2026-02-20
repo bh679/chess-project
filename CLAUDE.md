@@ -7,7 +7,7 @@ You are a **Product Engineer** — a full-stack agent that owns a single feature
 ## Workflow
 
 1. **User describes a feature** in the session chat.
-2. **Discover session ID** — find your CLI session ID and rename the session title to "Feature: <name>" (see Session Identification below).
+2. **Discover session ID** — find your CLI session ID and set the session title (see Session Identification below). Title format: `<Task Name> - Idea - PEA` (update the status portion whenever it changes).
 3. **Project board item** — search for an existing item first (`gh project item-list 1 --owner bh679 --format json`). If one exists, update its description with the new session info. If none exists, create one with Status: Idea.
 4. **🔒 Plan approval gate** — call `EnterPlanMode`. Explore the codebase, check the wikis, review related features, design the implementation, and estimate effort. Write the plan to the plan file and call `ExitPlanMode` to present it for approval (Status: Planned). **Wait for Approve.**
 5. **Implement** — create a git worktree, implement the feature following repo-specific coding standards.
@@ -77,15 +77,27 @@ At the very start of a new session (before any other work), discover your sessio
 2. The filename (minus `.jsonl`) is your CLI session ID
 3. Store this in memory for the rest of the session — do not re-discover it later
 
-### Renaming the Session
+### Session Title Convention
 
-Find the matching Desktop session JSON by searching `~/Library/Application Support/Claude/claude-code-sessions/` for files where `cliSessionId` matches your CLI session ID. Update the `"title"` field to `"Feature: <Feature Name>"`.
+**Format:** `<Task Name> - <Status> - PEA`
+
+- **Task Name** — 1-5 words describing the feature (e.g., "Online Multiplayer", "Eval Bar Fix")
+- **Status** — current project board status (Idea, Planned, In Development, Ready for Testing, Testing, Done)
+- **PEA** — Product Engineer Agent (always present)
+
+**Examples:**
+- `Online Multiplayer - Idea - PEA`
+- `Eval Bar Fix - In Development - PEA`
+- `Art Style Picker - Ready for Testing - PEA`
+- `Move History Panel - Done - PEA`
+
+**Update the title every time the status changes.** Find the matching Desktop session JSON by searching `~/Library/Application Support/Claude/claude-code-sessions/` for files where `cliSessionId` matches your CLI session ID. Update the `"title"` field.
 
 ### Project Board Description
 
 Include in every project board item description:
 ```
-Session: Feature: <Feature Name>
+Session: <Task Name> - <Status> - PEA
 Resume: claude --resume <session-id>
 ```
 
@@ -159,14 +171,14 @@ gh project item-list 1 --owner bh679 --format json
 1. Use the existing item — do NOT create a duplicate
 2. Update the item's description with the new session info:
    ```
-   Session: Feature: <name>
+   Session: <Task Name> - <Status> - PEA
    Resume: claude --resume <session-id>
    ```
 3. Review existing fields (Status, Priority, Categories, estimates) — keep what's already set unless the user says otherwise
 4. Continue from the item's current status (e.g., if it's already "Idea", proceed to planning)
 
 **If no matching item exists:**
-1. Create a project board item: `gh project item-create 1 --owner bh679 --title "<Feature Name>" --body "<description>\nSession: Feature: <name>\nResume: claude --resume <session-id>"`
+1. Create a project board item: `gh project item-create 1 --owner bh679 --title "<Feature Name>" --body "<description>\nSession: <Task Name> - Idea - PEA\nResume: claude --resume <session-id>"`
 2. Set Status to Idea, Priority, and Categories
 3. Perform initial estimation (Time Estimate, Complexity, Dependencies)
 4. Trigger score recalculation
@@ -364,13 +376,14 @@ git push origin master
 ## Operation Checklists
 
 ### Intake → 🔒 Gate 1 (Plan Approval)
-- [ ] Discover session ID and rename session title
+- [ ] Discover session ID and set session title: `<Task Name> - Idea - PEA`
 - [ ] Search project board for existing item matching this feature
 - [ ] If exists: update description with new session info, review existing fields
 - [ ] If new: create project board item, set Status: Idea, Priority, Categories, estimate, trigger score recalc
 - [ ] **Re-read `./CLAUDE.md`** — refresh gate requirements before entering plan mode
 - [ ] **`EnterPlanMode`** — write plan to plan file (approach, files, effort, risks)
 - [ ] **`ExitPlanMode`** → **Wait for Approve**
+- [ ] Update session title: `<Task Name> - In Development - PEA`
 - [ ] Project board Status → In Development
 
 ### Implementation → 🔒 Gate 2 (Testing Approval)
@@ -383,6 +396,7 @@ git push origin master
 - [ ] Playwright screenshots taken and analysed (if UI changes)
 - [ ] **`EnterPlanMode`** — write testing summary to plan file (results, screenshots, local URL, test instructions)
 - [ ] **`ExitPlanMode`** → **Wait for Approve**
+- [ ] Update session title: `<Task Name> - Ready for Testing - PEA`
 - [ ] Project board Status → Ready for Testing
 
 ### User Testing → 🔒 Gate 3 (Merge Approval)
@@ -394,6 +408,7 @@ git push origin master
 - [ ] **`EnterPlanMode`** — write merge summary to plan file (PR link, file diff, key changes)
 - [ ] **`ExitPlanMode`** → **Wait for Approve**
 - [ ] PR merged
+- [ ] Update session title: `<Task Name> - Done - PEA`
 - [ ] Re-read wiki CLAUDE.md files before documenting
 - [ ] Feature documented in appropriate wiki(s)
 - [ ] Wiki changes committed and pushed
