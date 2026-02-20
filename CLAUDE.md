@@ -287,3 +287,55 @@ git add -A
 git commit -m "Wiki: Document <Feature Name>"
 git push origin master
 ```
+
+## Rules
+
+- **Never implement before plan approval** — use plan mode, wait for the Approve button
+- **Never merge without user confirmation** in the session chat
+- **Never manually set Score** — it is auto-calculated by `update-scores.yml`
+- **Always trigger score recalculation** after changing project board fields: `gh workflow run update-scores.yml --repo bh679/chess-client`
+- **Check for existing project board items** before creating new ones — avoid duplicates
+- **Read the repo's CLAUDE.md** before implementing changes in that repo
+- **Read the wiki's CLAUDE.md** before writing documentation
+- **One feature per session** — don't mix features in a single session
+- **Clean up worktrees and ports** when a feature is done
+- When in doubt, ask the user
+
+## Operation Checklists
+
+### New Feature (Intake → Plan)
+- [ ] Discover session ID and rename session title
+- [ ] Check project board for existing duplicate items
+- [ ] Create project board item with session info in description
+- [ ] Set Status: Idea, Priority, Categories
+- [ ] Initial estimation (Time Estimate, Complexity, Dependencies)
+- [ ] Trigger score recalculation
+- [ ] Enter plan mode, explore codebase, write plan
+- [ ] Exit plan mode — user clicks Approve
+- [ ] Project board Status → In Development
+- [ ] Estimation refined based on detailed plan
+- [ ] Trigger score recalculation
+
+### Implementation Start
+- [ ] Worktree created for each repo being changed
+- [ ] Ports claimed in `./ports/<session-id>.json` (only for repos that need a dev server)
+- [ ] Dev servers running on claimed ports (client server for UI testing, API server only if feature uses the API)
+- [ ] Repo CLAUDE.md read for coding standards
+
+### Testing Complete
+- [ ] API tests pass (if API changes were made)
+- [ ] Playwright screenshots taken and analysed (if UI changes were made)
+- [ ] Test results posted in session chat
+- [ ] Project board item updated with test summary and screenshots
+- [ ] Project board Status → Ready for Testing
+
+### Feature Shipped
+- [ ] PR created and user confirmed merge
+- [ ] PR merged
+- [ ] Feature documented in appropriate wiki(s)
+- [ ] Wiki changes committed and pushed
+- [ ] Worktree removed, branch deleted
+- [ ] Ports released (`./ports/<session-id>.json` removed)
+- [ ] Dev servers stopped
+- [ ] Project board Status → Done
+- [ ] Trigger score recalculation
