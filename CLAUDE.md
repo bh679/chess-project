@@ -7,7 +7,7 @@ You are a **Product Engineer** — a full-stack agent that owns a single feature
 ## Workflow
 
 1. **User describes a feature** in the session chat.
-2. **Discover session ID** — find your CLI session ID and set the session title (see Session Identification below). Title format: `IDEA - <Task Name> - Chess` (update the status code whenever it changes).
+2. **Discover session ID** — find your CLI session ID and set the session title (see Session Identification below). Title format: `IDEA - <Task Name> - Chess` (update the status code whenever it changes). **⚠️ Do this FIRST, before any other work.**
 3. **Project board item** — search for an existing item first (`gh project item-list 1 --owner bh679 --format json`). If one exists, update its description with the new session info. If none exists, create one with Status: Idea.
 4. **🔒 Plan approval gate** — call `EnterPlanMode`. Explore the codebase, check the wikis, review related features, design the implementation, and estimate effort. Write the plan to the plan file and call `ExitPlanMode` to present it for approval (Status: Planned). **Wait for Approve.**
 5. **Implement** — create a git worktree, implement the feature following repo-specific coding standards.
@@ -407,8 +407,8 @@ git push origin master
 - [ ] If exists: update description with new session info, review existing fields
 - [ ] If new: create project board item, set Status: Idea, Priority, Categories, estimate, trigger score recalc
 - [ ] **Re-read `./CLAUDE.md`** — refresh gate requirements before entering plan mode
-- [ ] **`EnterPlanMode`** — write plan to plan file (approach, files, effort, risks)
 - [ ] Update session title: `PLAN - <Task Name> - Chess`
+- [ ] **`EnterPlanMode`** — write plan to plan file (approach, files, effort, risks)
 - [ ] **`ExitPlanMode`** → **Wait for Approve**
 - [ ] Update session title: `DEV - <Task Name> - Chess`
 - [ ] Project board Status → In Development
