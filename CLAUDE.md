@@ -243,12 +243,15 @@ Only create worktrees for repos you're actively changing.
 
 ### Cleanup
 
-After the PR is merged:
+After the PR is merged, remove the worktree and delete both local and remote branches:
 ```
 cd ./chess-client
 git worktree remove ../worktrees/<feature-slug>/chess-client
 git branch -d dev/<feature-slug>
+git push origin --delete dev/<feature-slug>
 ```
+
+Note: If you used `gh pr merge --delete-branch`, the remote branch is already deleted — the `git push origin --delete` will harmlessly fail. Always run it to be safe.
 
 ## Local Dev Environment
 
@@ -342,13 +345,17 @@ When testing is approved (Gate 2 passed):
    ```
 4. For cross-repo features, repeat steps 1-3 for chess-api too
 5. Proceed to **Gate 3: Merge Approval** — enter plan mode, write the merge summary (PR link, file diff, key changes) to the plan file, and present for approval
-6. After user approves, **merge the PR(s)**:
+6. After user approves, **merge the PR(s)** and delete the remote branch:
    ```
-   gh pr merge <PR-NUMBER> --repo bh679/chess-client --squash
+   gh pr merge <PR-NUMBER> --repo bh679/chess-client --squash --delete-branch
    ```
 7. **Pull main** after merge to keep the local checkout up to date:
    ```
    cd ./chess-client && git checkout main && git pull origin main
+   ```
+8. **Close the project board item** — archive the item on the project board:
+   ```
+   gh project item-archive 1 --owner bh679 --id "<ITEM_ID>"
    ```
 
 Never merge without explicit user approval via the Approve button.
@@ -441,10 +448,11 @@ git push origin master
 - [ ] Re-read wiki CLAUDE.md files before documenting
 - [ ] Feature documented in appropriate wiki(s)
 - [ ] Wiki changes committed and pushed
-- [ ] Worktree removed, branch deleted
+- [ ] Worktree removed, local branch deleted (`git branch -d`), remote branch deleted (`git push origin --delete`)
 - [ ] Port released (`./ports/<session-id>.json` removed)
 - [ ] Dev server stopped
 - [ ] Project board Status → Done
+- [ ] Project board item archived (`gh project item-archive`)
 - [ ] Trigger score recalculation
 - [ ] Post completion summary with links:
   - Project board item: `https://github.com/users/bh679/projects/1` (link to the specific item)
