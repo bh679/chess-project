@@ -287,22 +287,29 @@ Post all test output and screenshots in the session chat. Update the project boa
 
 When testing is approved (Gate 2 passed):
 
-1. **Push the feature branch** to the remote (required before creating a PR):
+1. **Pull latest main into the feature branch** to ensure the PR is up to date and conflict-free:
+   ```
+   cd ./worktrees/<feature-slug>/chess-client
+   git fetch origin main
+   git merge origin/main
+   ```
+   Resolve any conflicts before proceeding. If there are conflicts, fix them, commit, and re-test.
+2. **Push the feature branch** to the remote (required before creating a PR):
    ```
    cd ./worktrees/<feature-slug>/chess-client
    git push -u origin dev/<feature-slug>
    ```
-2. **Create a PR** from the feature branch to main:
+3. **Create a PR** from the feature branch to main:
    ```
    gh pr create --repo bh679/chess-client --title "<Feature Name>" --body "<summary of changes>"
    ```
-3. For cross-repo features, push and create a PR for chess-api too
-4. Proceed to **Gate 3: Merge Approval** — enter plan mode, write the merge summary (PR link, file diff, key changes) to the plan file, and present for approval
-5. After user approves, **merge the PR(s)**:
+4. For cross-repo features, repeat steps 1-3 for chess-api too
+5. Proceed to **Gate 3: Merge Approval** — enter plan mode, write the merge summary (PR link, file diff, key changes) to the plan file, and present for approval
+6. After user approves, **merge the PR(s)**:
    ```
    gh pr merge <PR-NUMBER> --repo bh679/chess-client --squash
    ```
-6. **Pull main** after merge to keep the local checkout up to date:
+7. **Pull main** after merge to keep the local checkout up to date:
    ```
    cd ./chess-client && git checkout main && git pull origin main
    ```
@@ -381,7 +388,8 @@ git push origin master
 - [ ] User tested and gave feedback
 - [ ] Any issues fixed and re-tested
 - [ ] **Re-read `./CLAUDE.md`** — refresh merge and documentation requirements
-- [ ] PR created
+- [ ] Pull latest main into feature branch (`git fetch origin main && git merge origin/main`), resolve any conflicts
+- [ ] Feature branch pushed, PR created
 - [ ] **`EnterPlanMode`** — write merge summary to plan file (PR link, file diff, key changes)
 - [ ] **`ExitPlanMode`** → **Wait for Approve**
 - [ ] PR merged
