@@ -96,11 +96,27 @@ At the very start of a new session (before any other work), discover your sessio
 
 **Examples:**
 - `IDEA - Online Multiplayer - Chess`
+- `PLAN - Online Multiplayer - Chess`
 - `DEV - Eval Bar Fix - Chess`
 - `TEST - Art Style Picker - Chess`
 - `DONE - Move History Panel - Chess`
 
 **Update the title every time the status changes.** Find the matching Desktop session JSON by searching `~/Library/Application Support/Claude/claude-code-sessions/` for files where `cliSessionId` matches your CLI session ID. Update the `"title"` field.
+
+**How to update the title:**
+```bash
+# 1. Find the session file (run once, store the path)
+SESSION_FILE=$(grep -rl '"cliSessionId":"<your-session-id>"' ~/Library/Application\ Support/Claude/claude-code-sessions/)
+
+# 2. Update the title (use node for safe JSON editing)
+node -e "
+const fs = require('fs');
+const f = '$SESSION_FILE';
+const d = JSON.parse(fs.readFileSync(f, 'utf8'));
+d.title = '<STATUS> - <Task Name> - Chess';
+fs.writeFileSync(f, JSON.stringify(d, null, 2));
+"
+```
 
 ### Project Board Description
 
@@ -392,6 +408,7 @@ git push origin master
 - [ ] If new: create project board item, set Status: Idea, Priority, Categories, estimate, trigger score recalc
 - [ ] **Re-read `./CLAUDE.md`** — refresh gate requirements before entering plan mode
 - [ ] **`EnterPlanMode`** — write plan to plan file (approach, files, effort, risks)
+- [ ] Update session title: `PLAN - <Task Name> - Chess`
 - [ ] **`ExitPlanMode`** → **Wait for Approve**
 - [ ] Update session title: `DEV - <Task Name> - Chess`
 - [ ] Project board Status → In Development
