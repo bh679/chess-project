@@ -5,8 +5,8 @@
       "Edit",
       "Write",
       "Bash",
-      "WebFetch(domain:github.com)",
-      "WebFetch(domain:raw.githubusercontent.com)"
+      "WebSearch",
+      "WebFetch"
     ],
     "deny": [
       "Bash(git push --force *)",
