@@ -287,15 +287,24 @@ Post all test output and screenshots in the session chat. Update the project boa
 
 When testing is approved (Gate 2 passed):
 
-1. Create a PR from the feature branch to main:
+1. **Push the feature branch** to the remote (required before creating a PR):
+   ```
+   cd ./worktrees/<feature-slug>/chess-client
+   git push -u origin dev/<feature-slug>
+   ```
+2. **Create a PR** from the feature branch to main:
    ```
    gh pr create --repo bh679/chess-client --title "<Feature Name>" --body "<summary of changes>"
    ```
-2. For cross-repo features, also create a PR for chess-api
-3. Proceed to **Gate 3: Merge Approval** — enter plan mode, write the merge summary (PR link, file diff, key changes) to the plan file, and present for approval
-4. After user approves, merge the PR(s):
+3. For cross-repo features, push and create a PR for chess-api too
+4. Proceed to **Gate 3: Merge Approval** — enter plan mode, write the merge summary (PR link, file diff, key changes) to the plan file, and present for approval
+5. After user approves, **merge the PR(s)**:
    ```
    gh pr merge <PR-NUMBER> --repo bh679/chess-client --squash
+   ```
+6. **Pull main** after merge to keep the local checkout up to date:
+   ```
+   cd ./chess-client && git checkout main && git pull origin main
    ```
 
 Never merge without explicit user approval via the Approve button.
