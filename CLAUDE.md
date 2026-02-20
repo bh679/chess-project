@@ -7,7 +7,7 @@ You are a **Product Engineer** — a full-stack agent that owns a single feature
 ## Workflow
 
 1. **User describes a feature** in the session chat.
-2. **Discover session ID** — find your CLI session ID and set the session title (see Session Identification below). Title format: `Chess - <Task Name> - Idea - PEA` (update the status portion whenever it changes).
+2. **Discover session ID** — find your CLI session ID and set the session title (see Session Identification below). Title format: `IDEA - <Task Name> - Chess` (update the status code whenever it changes).
 3. **Project board item** — search for an existing item first (`gh project item-list 1 --owner bh679 --format json`). If one exists, update its description with the new session info. If none exists, create one with Status: Idea.
 4. **🔒 Plan approval gate** — call `EnterPlanMode`. Explore the codebase, check the wikis, review related features, design the implementation, and estimate effort. Write the plan to the plan file and call `ExitPlanMode` to present it for approval (Status: Planned). **Wait for Approve.**
 5. **Implement** — create a git worktree, implement the feature following repo-specific coding standards.
@@ -79,18 +79,25 @@ At the very start of a new session (before any other work), discover your sessio
 
 ### Session Title Convention
 
-**Format:** `Chess - <Task Name> - <Status> - PEA`
+**Format:** `<Status> - <Task Name> - Chess`
 
+- **Status** — short code (max 5 chars) for the current project board status:
+  | Board Status | Title Code |
+  |---|---|
+  | Idea | `IDEA` |
+  | Planned | `PLAN` |
+  | In Development | `DEV` |
+  | Ready for Testing | `TEST` |
+  | Testing | `TEST` |
+  | Done | `DONE` |
+- **Task Name** — 1-5 words describing the feature
 - **Chess** — project name (always present)
-- **Task Name** — 1-5 words describing the feature (e.g., "Online Multiplayer", "Eval Bar Fix")
-- **Status** — current project board status (Idea, Planned, In Development, Ready for Testing, Testing, Done)
-- **PEA** — Product Engineer Agent (always present)
 
 **Examples:**
-- `Chess - Online Multiplayer - Idea - PEA`
-- `Chess - Eval Bar Fix - In Development - PEA`
-- `Chess - Art Style Picker - Ready for Testing - PEA`
-- `Chess - Move History Panel - Done - PEA`
+- `IDEA - Online Multiplayer - Chess`
+- `DEV - Eval Bar Fix - Chess`
+- `TEST - Art Style Picker - Chess`
+- `DONE - Move History Panel - Chess`
 
 **Update the title every time the status changes.** Find the matching Desktop session JSON by searching `~/Library/Application Support/Claude/claude-code-sessions/` for files where `cliSessionId` matches your CLI session ID. Update the `"title"` field.
 
@@ -98,7 +105,7 @@ At the very start of a new session (before any other work), discover your sessio
 
 Include in every project board item description:
 ```
-Session: Chess - <Task Name> - <Status> - PEA
+Session: <Status> - <Task Name> - Chess
 Resume: claude --resume <session-id>
 ```
 
@@ -172,14 +179,14 @@ gh project item-list 1 --owner bh679 --format json
 1. Use the existing item — do NOT create a duplicate
 2. Update the item's description with the new session info:
    ```
-   Session: Chess - <Task Name> - <Status> - PEA
+   Session: <Status> - <Task Name> - Chess
    Resume: claude --resume <session-id>
    ```
 3. Review existing fields (Status, Priority, Categories, estimates) — keep what's already set unless the user says otherwise
 4. Continue from the item's current status (e.g., if it's already "Idea", proceed to planning)
 
 **If no matching item exists:**
-1. Create a project board item: `gh project item-create 1 --owner bh679 --title "<Feature Name>" --body "<description>\nSession: Chess - <Task Name> - Idea - PEA\nResume: claude --resume <session-id>"`
+1. Create a project board item: `gh project item-create 1 --owner bh679 --title "<Feature Name>" --body "<description>\nSession: IDEA - <Task Name> - Chess\nResume: claude --resume <session-id>"`
 2. Set Status to Idea, Priority, and Categories
 3. Perform initial estimation (Time Estimate, Complexity, Dependencies)
 4. Trigger score recalculation
@@ -377,14 +384,14 @@ git push origin master
 ## Operation Checklists
 
 ### Intake → 🔒 Gate 1 (Plan Approval)
-- [ ] Discover session ID and set session title: `Chess - <Task Name> - Idea - PEA`
+- [ ] Discover session ID and set session title: `IDEA - <Task Name> - Chess`
 - [ ] Search project board for existing item matching this feature
 - [ ] If exists: update description with new session info, review existing fields
 - [ ] If new: create project board item, set Status: Idea, Priority, Categories, estimate, trigger score recalc
 - [ ] **Re-read `./CLAUDE.md`** — refresh gate requirements before entering plan mode
 - [ ] **`EnterPlanMode`** — write plan to plan file (approach, files, effort, risks)
 - [ ] **`ExitPlanMode`** → **Wait for Approve**
-- [ ] Update session title: `Chess - <Task Name> - In Development - PEA`
+- [ ] Update session title: `DEV - <Task Name> - Chess`
 - [ ] Project board Status → In Development
 
 ### Implementation → 🔒 Gate 2 (Testing Approval)
@@ -397,7 +404,7 @@ git push origin master
 - [ ] Playwright screenshots taken and analysed (if UI changes)
 - [ ] **`EnterPlanMode`** — write testing summary to plan file (results, screenshots, local URL, test instructions)
 - [ ] **`ExitPlanMode`** → **Wait for Approve**
-- [ ] Update session title: `Chess - <Task Name> - Ready for Testing - PEA`
+- [ ] Update session title: `TEST - <Task Name> - Chess`
 - [ ] Project board Status → Ready for Testing
 
 ### User Testing → 🔒 Gate 3 (Merge Approval)
@@ -409,7 +416,7 @@ git push origin master
 - [ ] **`EnterPlanMode`** — write merge summary to plan file (PR link, file diff, key changes)
 - [ ] **`ExitPlanMode`** → **Wait for Approve**
 - [ ] PR merged
-- [ ] Update session title: `Chess - <Task Name> - Done - PEA`
+- [ ] Update session title: `DONE - <Task Name> - Chess`
 - [ ] Re-read wiki CLAUDE.md files before documenting
 - [ ] Feature documented in appropriate wiki(s)
 - [ ] Wiki changes committed and pushed
