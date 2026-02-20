@@ -332,6 +332,7 @@ git push origin master
 
 ## Rules
 
+- **Re-read CLAUDE.md at every gate** — before entering each approval gate, re-read this file (`./CLAUDE.md`) to refresh your memory of the workflow, gate requirements, and rules. Also re-read the relevant repo CLAUDE.md files before implementation (Gate 1→2) and wiki CLAUDE.md files before documentation (after Gate 3).
 - **Use plan mode for ALL approval gates** — Gate 1 (plan), Gate 2 (testing), Gate 3 (merge). Always `EnterPlanMode` → write summary to plan file → `ExitPlanMode` → wait for Approve. Never proceed past a gate without the Approve button.
 - **Never merge without Gate 3 approval** — create the PR first, then present the diff summary in plan mode for approval
 - **Never manually set Score** — it is auto-calculated by `update-scores.yml`
@@ -350,29 +351,32 @@ git push origin master
 - [ ] Search project board for existing item matching this feature
 - [ ] If exists: update description with new session info, review existing fields
 - [ ] If new: create project board item, set Status: Idea, Priority, Categories, estimate, trigger score recalc
+- [ ] **Re-read `./CLAUDE.md`** — refresh gate requirements before entering plan mode
 - [ ] **`EnterPlanMode`** — write plan to plan file (approach, files, effort, risks)
 - [ ] **`ExitPlanMode`** → **Wait for Approve**
 - [ ] Project board Status → In Development
 
 ### Implementation → 🔒 Gate 2 (Testing Approval)
+- [ ] **Re-read `./CLAUDE.md`** and repo CLAUDE.md files — refresh workflow and coding standards
 - [ ] Worktree created for each repo being changed
 - [ ] Port claimed in `./ports/<session-id>.json`
 - [ ] Dev server running
-- [ ] Repo CLAUDE.md read for coding standards
 - [ ] Feature implemented
 - [ ] API tests pass (if API changes)
 - [ ] Playwright screenshots taken and analysed (if UI changes)
-- [ ] **`EnterPlanMode`** — write testing summary to plan file (results, screenshots, local URL, what to verify)
+- [ ] **`EnterPlanMode`** — write testing summary to plan file (results, screenshots, local URL, test instructions)
 - [ ] **`ExitPlanMode`** → **Wait for Approve**
 - [ ] Project board Status → Ready for Testing
 
 ### User Testing → 🔒 Gate 3 (Merge Approval)
 - [ ] User tested and gave feedback
 - [ ] Any issues fixed and re-tested
+- [ ] **Re-read `./CLAUDE.md`** — refresh merge and documentation requirements
 - [ ] PR created
 - [ ] **`EnterPlanMode`** — write merge summary to plan file (PR link, file diff, key changes)
 - [ ] **`ExitPlanMode`** → **Wait for Approve**
 - [ ] PR merged
+- [ ] Re-read wiki CLAUDE.md files before documenting
 - [ ] Feature documented in appropriate wiki(s)
 - [ ] Wiki changes committed and pushed
 - [ ] Worktree removed, branch deleted
