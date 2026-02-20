@@ -1,0 +1,21 @@
+# Sub-repositories — clone these separately (see README.md)
+chess-client/
+chess-api/
+Wiki/
+chess-api-wiki/
+
+# Git worktrees created by Product Engineer sessions
+worktrees/
+
+# macOS
+.DS_Store
+
+# Claude Code session-local settings (not shared)
+.claude/settings.local.json
+
+# Node modules (for Playwright etc.)
+node_modules/
+
+# Playwright test results
+test-results/
+playwright-report/
