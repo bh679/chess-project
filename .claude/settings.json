@@ -19,6 +19,8 @@
       "Bash(find *)",
       "Bash(head *)",
       "Bash(grep *)",
+      "Bash(sort *)",
+      "Bash(tail *)",
       "Bash(rm ./ports/*)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:raw.githubusercontent.com)"
