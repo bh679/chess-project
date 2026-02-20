@@ -198,3 +198,44 @@ Ports are tracked in `./ports/` at the chess-project root (shared across all ses
 **Releasing ports (at session end / cleanup):**
 1. Stop dev servers: `kill %1 %2` (or by PID)
 2. Remove port file: `rm ./ports/<session-id>.json`
+
+## Testing
+
+Test your own work before presenting to the user. Use both API tests and Playwright browser tests.
+
+### API Testing
+
+Test endpoints directly:
+```
+curl -X GET http://localhost:<api-port>/api/<endpoint>
+curl -X POST http://localhost:<api-port>/api/<endpoint> -H "Content-Type: application/json" -d '{"key": "value"}'
+```
+
+### Playwright Browser Testing
+
+Use Playwright to automate a headless browser and take screenshots for visual verification.
+
+```javascript
+const { chromium } = require('playwright');
+
+const browser = await chromium.launch();
+const page = await browser.newPage();
+await page.goto('http://localhost:<client-port>');
+
+// Interact with the UI
+await page.click('#some-element');
+await page.fill('#input-field', 'value');
+
+// Take a screenshot for visual analysis
+await page.screenshot({ path: 'test-results/<feature>-<step>.png' });
+await browser.close();
+```
+
+After taking screenshots, analyse them with your vision capabilities:
+- Verify the UI renders correctly
+- Check that elements are positioned and styled as expected
+- Confirm user flows work end-to-end (e.g., clicking squares, dragging pieces, verifying board state)
+
+### Test Results
+
+Post all test output and screenshots in the session chat. Update the project board item with a summary and screenshots.
