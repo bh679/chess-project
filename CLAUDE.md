@@ -54,6 +54,7 @@ Use `EnterPlanMode` → write summary to plan file → `ExitPlanMode` → **wait
 **When:** After the user has tested and the PR is created.
 
 **Write to the plan file:**
+- **⚠️ MERGE CONFLICTS: YES / NO** — state this first, in bold, at the very top of the summary. If there are conflicts, list every conflicting file and describe each conflict before anything else. The user must know about conflicts immediately.
 - PR link(s)
 - File diff summary: files changed, lines added/removed, key changes per file
 - Any migration notes or deployment considerations
