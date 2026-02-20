@@ -325,6 +325,7 @@ After a feature is merged, document it in the appropriate wiki. Follow the templ
 1. Read `./Wiki/CLAUDE.md` for templates and formatting conventions
 2. Add entry to `Features.md` index
 3. Create `Feature: <Name>.md` page using the feature documentation template
+4. **Include screenshots** — for front-end changes, copy final Playwright screenshots into `./Wiki/images/` and reference them in the feature page (see the wiki template for the Screenshots section)
 
 ### Server Features → chess-api Wiki (`./chess-api-wiki/`)
 
